@@ -1,12 +1,18 @@
 %define libxmu %mklibname xmu 6
 Name: libxmu
 Summary: Xmu Library
-Version: 1.0.3
-Release: %mkrel 2
+Version: 1.0.4
+Release: %mkrel 1
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
-Source0: http://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.tar.bz2
+
+########################################################################
+# git clone git://git.mandriva.com/people/pcpa/xorg/lib/libXmu xorg/lib/libXmu
+# cd xorg/lib/libXmu
+# git-archive --format=tar --prefix=libXmu-1.0.4/ libXmu-1.0.4 | bzip2 -9 > libXmu-1.0.4.tar.bz2
+########################################################################
+Source0: libXmu-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: x11-util-macros		>= 1.1.5
@@ -109,7 +115,8 @@ Static development files for %{name}
 %setup -q -n libXmu-%{version}
 
 %build
-%configure2_5x	--x-includes=%{_includedir}\
+autoreconf -ifs
+%configure	--x-includes=%{_includedir}\
 		--x-libraries=%{_libdir}
 
 %make
@@ -130,5 +137,3 @@ rm -rf %{buildroot}
 %{_libdir}/libXmu.so.6.2.0
 %{_libdir}/libXmuu.so.1
 %{_libdir}/libXmuu.so.1.0.0
-
-
