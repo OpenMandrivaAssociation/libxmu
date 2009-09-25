@@ -1,8 +1,8 @@
 %define libxmu %mklibname xmu 6
 Name: libxmu
 Summary: Xmu Library
-Version: 1.0.4
-Release: %mkrel 5
+Version: 1.0.5
+Release: %mkrel 1
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
