@@ -2,7 +2,7 @@
 Name: libxmu
 Summary: Xmu Library
 Version: 1.0.5
-Release: %mkrel 1
+Release: %mkrel 2
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
@@ -13,7 +13,7 @@ BuildRequires: libx11-devel >= 1.0.0
 BuildRequires: libxext-devel >= 1.0.0
 BuildRequires: libxt-devel >= 1.0.0
 BuildRequires: x11-proto-devel >= 1.0.0
-BuildRequires: x11-util-macros >= 1.0.1
+BuildRequires: x11-util-macros >= 1.3.0
 
 %description
 Xmu Library
