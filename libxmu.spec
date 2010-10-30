@@ -80,7 +80,8 @@ fi
 %{_includedir}/X11/Xmu/Editres.h
 %{_includedir}/X11/Xmu/CurUtil.h
 %{_includedir}/X11/Xmu/CharSet.h
-
+%{_includedir}/X11/Xmu/WhitePoint.h
+%{_datadir}/doc/libXmu
 #-----------------------------------------------------------
 
 %package -n %{libxmu}-static-devel
