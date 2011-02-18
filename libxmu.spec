@@ -1,8 +1,11 @@
-%define libxmu %mklibname xmu 6
+%define libname %mklibname xmu 6
+%define develname %mklibname xmu -d
+%define staticname %mklibname xmu -s -d
+
 Name: libxmu
 Summary: Xmu Library
 Version: 1.1.0
-Release: %mkrel 1
+Release: %mkrel 2
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
@@ -20,37 +23,39 @@ Xmu Library
 
 #-----------------------------------------------------------
 
-%package -n %{libxmu}
+%package -n %{libname}
 Summary: Xmu Library
 Group: Development/X11
 Conflicts: libxorg-x11 < 7.0
 Provides: %{name} = %{version}
 
-%description -n %{libxmu}
+%description -n %{libname}
 Xmu Library
 
 #-----------------------------------------------------------
 
-%package -n %{libxmu}-devel
+%package -n %{develname}
 Summary: Development files for %{name}
 Group: Development/X11
-Requires: %{libxmu} = %{version}
+Requires: %{libname} = %{version}-%{release}
 Requires: libx11-devel >= 1.0.0
 Requires: libxt-devel >= 1.0.0
 Requires: x11-proto-devel >= 1.0.0
 Provides: libxmu-devel = %{version}-%{release}
+Provides: libxmu6-devel = %{version}-%{release}
+Obsoletes: %{mklibname xmu 6 -d}
 
 Conflicts: libxorg-x11-devel < 7.0
 
-%description -n %{libxmu}-devel
+%description -n %{develname}
 Development files for %{name}
 
-%pre -n %{libxmu}-devel
+%pre -n %{develname}
 if [ -h %{_includedir}/X11 ]; then
 	rm -f %{_includedir}/X11
 fi
 
-%files -n %{libxmu}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %{_libdir}/libXmuu.so
 %{_libdir}/libXmu.so
@@ -82,20 +87,23 @@ fi
 %{_includedir}/X11/Xmu/CharSet.h
 %{_includedir}/X11/Xmu/WhitePoint.h
 %{_datadir}/doc/libXmu
+
 #-----------------------------------------------------------
 
-%package -n %{libxmu}-static-devel
+%package -n %{staticname}
 Summary: Static development files for %{name}
 Group: Development/X11
-Requires: %{libxmu}-devel = %{version}
+Requires: %{develname} = %{version}-%{release}
 Provides: libxmu-static-devel = %{version}-%{release}
+Provides: libxmu6-static-devel = %{version}-%{release}
+Obsoletes: %{mklibname xmu 6 -s -d}
 
 Conflicts: libxorg-x11-static-devel < 7.0
 
-%description -n %{libxmu}-static-devel
+%description -n %{staticname}
 Static development files for %{name}
 
-%files -n %{libxmu}-static-devel
+%files -n %{staticname}
 %defattr(-,root,root)
 %{_libdir}/libXmu.a
 %{_libdir}/libXmuu.a
@@ -126,7 +134,7 @@ rm -rf %{buildroot}
 %postun -p /sbin/ldconfig
 %endif
 
-%files -n %{libxmu}
+%files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/libXmu.so.6
 %{_libdir}/libXmu.so.6.2.0
