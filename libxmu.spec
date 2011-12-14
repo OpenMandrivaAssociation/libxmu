@@ -133,5 +133,5 @@ find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 %{_libdir}/libXmu.so.%{major}*
 
 %files -n %{libu}
-%{_libdir}/libXmuu.so.%{u_major}
+%{_libdir}/libXmuu.so.%{u_major}*
 
