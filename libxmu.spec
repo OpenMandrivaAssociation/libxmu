@@ -1,16 +1,18 @@
-%define libname %mklibname xmu 6
+%define major 6
+%define u_major 1
+%define libname %mklibname xmu %{major}
+%define libu %mklibname xmuu %{u_major}
 %define develname %mklibname xmu -d
 %define staticname %mklibname xmu -s -d
 
 Name: libxmu
 Summary: Xmu Library
 Version: 1.1.0
-Release: %mkrel 3
+Release: 4
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
 Source0: http://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.tar.bz2
-BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: libx11-devel >= 1.0.0
 BuildRequires: libxext-devel >= 1.0.0
@@ -32,19 +34,24 @@ Provides: %{name} = %{version}
 %description -n %{libname}
 Xmu Library
 
+%package -n %{libu}
+Summary: Xmuu Library
+Group: Development/X11
+Conflicts: libxorg-x11 < 7.0
+Conflicts: %{libname} < 1.1.0-4
+
+%description -n %{libu}
+Xmuu Library
+
 #-----------------------------------------------------------
 
 %package -n %{develname}
 Summary: Development files for %{name}
 Group: Development/X11
 Requires: %{libname} = %{version}-%{release}
-Requires: libx11-devel >= 1.0.0
-Requires: libxt-devel >= 1.0.0
-Requires: x11-proto-devel >= 1.0.0
+Requires: %{libu} = %{version}-%{release}
 Provides: libxmu-devel = %{version}-%{release}
-Provides: libxmu6-devel = %{version}-%{release}
 Obsoletes: %{mklibname xmu 6 -d}
-
 Conflicts: libxorg-x11-devel < 7.0
 
 %description -n %{develname}
@@ -59,8 +66,6 @@ fi
 %defattr(-,root,root)
 %{_libdir}/libXmuu.so
 %{_libdir}/libXmu.so
-%{_libdir}/libXmuu.la
-%{_libdir}/libXmu.la
 %{_libdir}/pkgconfig/xmuu.pc
 %{_libdir}/pkgconfig/xmu.pc
 %{_includedir}/X11/Xmu/CloseHook.h
@@ -104,7 +109,6 @@ Conflicts: libxorg-x11-static-devel < 7.0
 Static development files for %{name}
 
 %files -n %{staticname}
-%defattr(-,root,root)
 %{_libdir}/libXmu.a
 %{_libdir}/libXmuu.a
 
@@ -123,20 +127,11 @@ autoreconf -ifs
 %install
 rm -rf %{buildroot}
 %makeinstall_std
-
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -p /sbin/ldconfig
-%endif
+find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 
 %files -n %{libname}
-%defattr(-,root,root)
-%{_libdir}/libXmu.so.6
-%{_libdir}/libXmu.so.6.2.0
-%{_libdir}/libXmuu.so.1
-%{_libdir}/libXmuu.so.1.0.0
+%{_libdir}/libXmu.so.%{major}*
+
+%files -n %{libu}
+%{_libdir}/libXmuu.so.%{u_major}
+
