@@ -3,12 +3,11 @@
 %define libname %mklibname xmu %{major}
 %define libu %mklibname xmuu %{u_major}
 %define develname %mklibname xmu -d
-%define staticname %mklibname xmu -s -d
 
 Name: libxmu
 Summary: Xmu Library
 Version: 1.1.0
-Release: 4
+Release: 5
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
@@ -22,8 +21,6 @@ BuildRequires: x11-util-macros >= 1.3.0
 
 %description
 Xmu Library
-
-#-----------------------------------------------------------
 
 %package -n %{libname}
 Summary: Xmu Library
@@ -43,24 +40,46 @@ Conflicts: %{libname} < 1.1.0-4
 %description -n %{libu}
 Xmuu Library
 
-#-----------------------------------------------------------
-
 %package -n %{develname}
 Summary: Development files for %{name}
 Group: Development/X11
 Requires: %{libname} = %{version}-%{release}
 Requires: %{libu} = %{version}-%{release}
 Provides: libxmu-devel = %{version}-%{release}
-Obsoletes: %{mklibname xmu 6 -d}
+Obsoletes: %{_lib}xmu6-devel
+Obsoletes: %{_lib}xmu-static-devel
 Conflicts: libxorg-x11-devel < 7.0
 
 %description -n %{develname}
 Development files for %{name}
 
+%prep
+%setup -qn libXmu-%{version}
+
+%build
+autoreconf -ifs
+%configure \
+	--disable-static \
+	--x-includes=%{_includedir} \
+	--x-libraries=%{_libdir}
+
+%make
+
+%install
+rm -rf %{buildroot}
+%makeinstall_std
+find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
+
 %pre -n %{develname}
 if [ -h %{_includedir}/X11 ]; then
 	rm -f %{_includedir}/X11
 fi
+
+%files -n %{libname}
+%{_libdir}/libXmu.so.%{major}*
+
+%files -n %{libu}
+%{_libdir}/libXmuu.so.%{u_major}*
 
 %files -n %{develname}
 %defattr(-,root,root)
@@ -92,46 +111,4 @@ fi
 %{_includedir}/X11/Xmu/CharSet.h
 %{_includedir}/X11/Xmu/WhitePoint.h
 %{_datadir}/doc/libXmu
-
-#-----------------------------------------------------------
-
-%package -n %{staticname}
-Summary: Static development files for %{name}
-Group: Development/X11
-Requires: %{develname} = %{version}-%{release}
-Provides: libxmu-static-devel = %{version}-%{release}
-Provides: libxmu6-static-devel = %{version}-%{release}
-Obsoletes: %{mklibname xmu 6 -s -d}
-
-Conflicts: libxorg-x11-static-devel < 7.0
-
-%description -n %{staticname}
-Static development files for %{name}
-
-%files -n %{staticname}
-%{_libdir}/libXmu.a
-%{_libdir}/libXmuu.a
-
-#-----------------------------------------------------------
-
-%prep
-%setup -q -n libXmu-%{version}
-
-%build
-autoreconf -ifs
-%configure	--x-includes=%{_includedir}\
-		--x-libraries=%{_libdir}
-
-%make
-
-%install
-rm -rf %{buildroot}
-%makeinstall_std
-find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
-
-%files -n %{libname}
-%{_libdir}/libXmu.so.%{major}*
-
-%files -n %{libu}
-%{_libdir}/libXmuu.so.%{u_major}*
 
