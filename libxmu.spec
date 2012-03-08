@@ -7,7 +7,7 @@
 Name: libxmu
 Summary: Xmu Library
 Version: 1.1.1
-Release: 1
+Release: 2
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
@@ -69,11 +69,6 @@ autoreconf -ifs
 rm -rf %{buildroot}
 %makeinstall_std
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
-
-%pre -n %{develname}
-if [ -h %{_includedir}/X11 ]; then
-	rm -f %{_includedir}/X11
-fi
 
 %files -n %{libname}
 %{_libdir}/libXmu.so.%{major}*
