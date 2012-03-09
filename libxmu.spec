@@ -7,7 +7,7 @@
 Name: libxmu
 Summary: Xmu Library
 Version: 1.1.1
-Release: 2
+Release: 3
 Group: Development/X11
 License: MIT
 URL: http://xorg.freedesktop.org
