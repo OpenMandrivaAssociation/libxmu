@@ -6,8 +6,8 @@
 
 Summary:	Xmu Library
 Name:		libxmu
-Version:	1.1.2
-Release:	13
+Version:	1.1.3
+Release:	11
 Group:		Development/X11
 License:	MIT
 Url:		http://xorg.freedesktop.org
@@ -49,7 +49,7 @@ Provides:	libxmu-devel = %{version}-%{release}
 Development files for %{name}.
 
 %prep
-%setup -qn libXmu-%{version}
+%autosetup -n libXmu-%{version} -p1
 autoreconf -ifs
 
 %build
@@ -58,10 +58,10 @@ autoreconf -ifs
 	--x-includes=%{_includedir} \
 	--x-libraries=%{_libdir}
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 %files -n %{libname}
 %{_libdir}/libXmu.so.%{major}*
@@ -98,4 +98,3 @@ autoreconf -ifs
 %{_includedir}/X11/Xmu/CharSet.h
 %{_includedir}/X11/Xmu/WhitePoint.h
 %{_datadir}/doc/libXmu
-
