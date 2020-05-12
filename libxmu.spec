@@ -1,13 +1,26 @@
+# libXmu is used by wine
+%ifarch %{x86_64}
+%bcond_without compat32
+%else
+%bcond_with compat32
+%endif
+
 %define major 6
 %define u_major 1
 %define libname %mklibname xmu %{major}
 %define libu %mklibname xmuu %{u_major}
 %define devname %mklibname xmu -d
 
+%if %{with compat32}
+%define lib32name libxmu%{major}
+%define lib32u libxmuu%{u_major}
+%define dev32name libxmu-devel
+%endif
+
 Summary:	Xmu Library
 Name:		libxmu
 Version:	1.1.3
-Release:	11
+Release:	12
 Group:		Development/X11
 License:	MIT
 Url:		http://xorg.freedesktop.org
@@ -18,6 +31,11 @@ BuildRequires:	pkgconfig(xext)
 BuildRequires:	pkgconfig(xorg-macros)
 BuildRequires:	pkgconfig(xproto)
 BuildRequires:	pkgconfig(xt)
+%if %{with compat32}
+BuildRequires:	devel(libX11)
+BuildRequires:	devel(libXext)
+BuildRequires:	devel(libXt)
+%endif
 
 %description
 Xmu Library.
@@ -25,7 +43,6 @@ Xmu Library.
 %package -n %{libname}
 Summary:	Xmu Library
 Group:		Development/X11
-Provides:	%{name} = %{version}-%{release}
 
 %description -n %{libname}
 Xmu Library.
@@ -43,25 +60,61 @@ Summary:	Development files for %{name}
 Group:		Development/X11
 Requires:	%{libname} = %{version}-%{release}
 Requires:	%{libu} = %{version}-%{release}
-Provides:	libxmu-devel = %{version}-%{release}
 
 %description -n %{devname}
 Development files for %{name}.
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	Xmu Library (32-bit)
+Group:		Development/X11
+
+%description -n %{lib32name}
+Xmu Library.
+
+%package -n %{lib32u}
+Summary:	Xmuu Library (32-bit)
+Group:		Development/X11
+
+%description -n %{lib32u}
+Xmuu Library.
+
+%package -n %{dev32name}
+Summary:	Development files for %{name} (32-bit)
+Group:		Development/X11
+Requires:	%{devname} = %{version}-%{release}
+Requires:	%{lib32name} = %{version}-%{release}
+Requires:	%{lib32u} = %{version}-%{release}
+
+%description -n %{dev32name}
+Development files for %{name}.
+%endif
+
 %prep
 %autosetup -n libXmu-%{version} -p1
 autoreconf -ifs
+export CONFIGURE_TOP="`pwd`"
+%if %{with compat32}
+mkdir build32
+cd build32
+%configure32
+cd ..
+%endif
+mkdir build
+cd build
+%configure
 
 %build
-%configure \
-	--disable-static \
-	--x-includes=%{_includedir} \
-	--x-libraries=%{_libdir}
-
-%make_build
+%if %{with compat32}
+%make_build -C build32
+%endif
+%make_build -C build
 
 %install
-%make_install
+%if %{with compat32}
+%make_install -C build32
+%endif
+%make_install -C build
 
 %files -n %{libname}
 %{_libdir}/libXmu.so.%{major}*
@@ -98,3 +151,17 @@ autoreconf -ifs
 %{_includedir}/X11/Xmu/CharSet.h
 %{_includedir}/X11/Xmu/WhitePoint.h
 %{_datadir}/doc/libXmu
+
+%if %{with compat32}
+%files -n %{lib32name}
+%{_prefix}/lib/libXmu.so.%{major}*
+
+%files -n %{lib32u}
+%{_prefix}/lib/libXmuu.so.%{u_major}*
+
+%files -n %{dev32name}
+%{_prefix}/lib/libXmuu.so
+%{_prefix}/lib/libXmu.so
+%{_prefix}/lib/pkgconfig/xmuu.pc
+%{_prefix}/lib/pkgconfig/xmu.pc
+%endif
