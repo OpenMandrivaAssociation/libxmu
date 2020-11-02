@@ -38,6 +38,8 @@ BuildRequires:	devel(libXt)
 BuildRequires:	devel(libxcb)
 BuildRequires:	devel(libXau)
 BuildRequires:	devel(libXdmcp)
+BuildRequires:	devel(libICE)
+BuildRequires:	devel(libSM)
 %endif
 
 %description
