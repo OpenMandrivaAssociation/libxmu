@@ -37,7 +37,7 @@ BuildRequires:	devel(libXext)
 BuildRequires:	devel(libXt)
 BuildRequires:	devel(libxcb)
 BuildRequires:	devel(libXau)
-BuildRequires:	devel(libXdmpc)
+BuildRequires:	devel(libXdmcp)
 %endif
 
 %description
