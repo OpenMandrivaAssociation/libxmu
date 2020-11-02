@@ -35,6 +35,7 @@ BuildRequires:	pkgconfig(xt)
 BuildRequires:	devel(libX11)
 BuildRequires:	devel(libXext)
 BuildRequires:	devel(libXt)
+BuildRequires:	devel(libxcb)
 %endif
 
 %description
