@@ -19,12 +19,12 @@
 
 Summary:	Xmu Library
 Name:		libxmu
-Version:	1.1.3
-Release:	12
+Version:	1.1.4
+Release:	1
 Group:		Development/X11
 License:	MIT
 Url:		http://xorg.freedesktop.org
-Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.tar.bz2
+Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.tar.xz
 
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
@@ -98,7 +98,7 @@ Development files for %{name}.
 %prep
 %autosetup -n libXmu-%{version} -p1
 autoreconf -ifs
-export CONFIGURE_TOP="`pwd`"
+export CONFIGURE_TOP="$(pwd)"
 %if %{with compat32}
 mkdir build32
 cd build32
@@ -155,7 +155,7 @@ cd build
 %{_includedir}/X11/Xmu/CurUtil.h
 %{_includedir}/X11/Xmu/CharSet.h
 %{_includedir}/X11/Xmu/WhitePoint.h
-%{_datadir}/doc/libXmu
+%doc %{_datadir}/doc/libXmu
 
 %if %{with compat32}
 %files -n %{lib32name}
