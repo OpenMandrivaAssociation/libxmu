@@ -19,12 +19,12 @@
 
 Summary:	Xmu Library
 Name:		libxmu
-Version:	1.1.4
-Release:	2
+Version:	1.2.1
+Release:	1
 Group:		Development/X11
 License:	MIT
-Url:		http://xorg.freedesktop.org
-Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.tar.xz
+Url:		https://xorg.freedesktop.org
+Source0:	https://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.tar.xz
 
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
