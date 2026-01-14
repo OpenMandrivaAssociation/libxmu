@@ -28,7 +28,6 @@ Source0:	https://xorg.freedesktop.org/releases/individual/lib/libXmu-%{version}.
 
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
 BuildRequires:	pkgconfig(x11)
@@ -118,15 +117,15 @@ cd build
 
 %build
 %if %{with compat32}
-%make_build -C build32
+%make_build -C build32 LIBTOOL=slibtool-shared
 %endif
-%make_build -C build
+%make_build -C build LIBTOOL=slibtool-shared
 
 %install
 %if %{with compat32}
-%make_install -C build32
+%make_install -C build32 LIBTOOL=slibtool-shared
 %endif
-%make_install -C build
+%make_install -C build LIBTOOL=slibtool-shared
 
 %files -n %{libname}
 %{_libdir}/libXmu.so.%{major}*
